@@ -20,5 +20,10 @@ describe('. routes', () => {
     );
   });
 
-  it('should login and redirect to the posts', async () => {});
+  it('should login and redirect to the posts', async () => {
+    const req = await request
+      .agent(app)
+      .get('/api/v1/github/login/callback?code=42')
+      .redirects(1);
+  });
 });
