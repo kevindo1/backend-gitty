@@ -20,19 +20,5 @@ describe('. routes', () => {
     );
   });
 
-  it('should login and redirect to the Github dashboard', async () => {
-    const req = await request
-      .agent(app)
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
-
-    expect(req.body).toEqual({
-      id: expect.any(String),
-      username: 'kevin',
-      email: 'kevin@email.com',
-      avatar: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
-  });
+  it('should login and redirect to the posts', async () => {});
 });
