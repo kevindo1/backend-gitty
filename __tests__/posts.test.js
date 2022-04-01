@@ -16,12 +16,8 @@ describe('. routes', () => {
 
   it.only('user can get posts', async () => {
     const agent = request.agent(app);
-    await agent.get('/api/v1/github/login');
-
-    await request
-      .agent(app)
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
+    await request(app).get('/api/v1/github/login');
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
 
     const post1 = {
       id: expect.any(String),
@@ -30,7 +26,7 @@ describe('. routes', () => {
 
     const post2 = {
       id: expect.any(String),
-      text: 'this is the first post',
+      text: 'this is the second post',
     };
 
     const res = await agent.get('/api/v1/posts/');
