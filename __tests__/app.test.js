@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const GitHubUser = require('../lib/models/GithubUser');
 
 jest.mock('../lib/utils/github');
 
@@ -29,5 +30,19 @@ describe('. routes', () => {
       .redirects(1);
 
     expect(req.redirects[0]).toEqual(expect.stringContaining('/api/v1/posts'));
+  });
+
+  it('should sign out user and delete route', async () => {
+    await GitHubUser.insert({
+      login: 'fake_github_user',
+      avatar_url: 'https://www.placecage.com/gif/300/300',
+      email: 'not-real@example.com',
+    });
+
+    const res = await request(app).delete('/api/v1/login/callback');
+    expect(res.body).toEqual({
+      message: 'Logged out successfully',
+      success: true,
+    });
   });
 });
