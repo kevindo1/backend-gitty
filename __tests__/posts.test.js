@@ -14,7 +14,7 @@ describe('. routes', () => {
     pool.end();
   });
 
-  it.only('user can get posts', async () => {
+  it('user can get posts', async () => {
     const agent = request.agent(app);
     await request(app).get('/api/v1/github/login');
     await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
@@ -34,19 +34,16 @@ describe('. routes', () => {
     expect(res.body).toEqual([post1, post2]);
   });
 
-  // it('creates a post if user is currently signed in', async () => {
-  //   const agent = request.agent(app);
-  //   const loginReq = await request
-  //     .agent(app)
-  //     .get(`/api/v1/github/login/callback?code=42`)
-  //     .redirects(1);
+  it('creates a post if user is currently signed in', async () => {
+    const agent = request.agent(app);
+    await agent.get(`/api/v1/github/login/callback?code=42`).redirects(1);
 
-  //   const res = await request(app).post('/api/v1/posts').send({
-  //     text: 'this is the first post',
-  //   });
-  //   expect(res.body).toEqual({
-  //     id: expect.any(String),
-  //     text: 'this is the first post',
-  //   });
-  // });
+    const res = await agent.post('/api/v1/posts/create').send({
+      text: 'this is the first post',
+    });
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      text: 'this is the first post',
+    });
+  });
 });
