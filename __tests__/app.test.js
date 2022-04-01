@@ -34,12 +34,12 @@ describe('. routes', () => {
 
   it('should sign out user and delete route', async () => {
     await GitHubUser.insert({
-      login: 'fake_github_user',
+      username: 'fake_github_user',
       avatar_url: 'https://www.placecage.com/gif/300/300',
       email: 'not-real@example.com',
     });
 
-    const res = await request(app).delete('/api/v1/login/callback');
+    const res = await request(app).delete('/api/v1/github/sessions');
     expect(res.body).toEqual({
       message: 'Logged out successfully',
       success: true,
