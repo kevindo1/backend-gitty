@@ -14,7 +14,7 @@ describe('. routes', () => {
     pool.end();
   });
 
-  it('user can get posts', async () => {
+  it.only('user can get posts', async () => {
     const agent = request.agent(app);
     await agent.get('/api/v1/github/login');
 
